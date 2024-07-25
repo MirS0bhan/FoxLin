@@ -51,7 +51,7 @@ $ pip install -e setup.py
 ```Python
 from foxlin import FoxLin, Schema, column
 
-class MyTable(schema):
+class MyTable(Schema):
     # define your teble schema
     name: str = column(dtype=str)
     age: int = column(dtype=int)
@@ -61,9 +61,9 @@ class MyTable(schema):
 db = FoxLin('./db.json', MyTable) # create db
 
 data = [
-    MyTable(name='brian', age=37, username='biran1999', password='123456789')
+    MyTable(name='brian', age=37, username='biran1999', password='123456789'),
     MyTable(name='sobhan', age=20, username='misano', password='#197382645#'),
-    MyTable(name='Tommy', age=15, username='god_of_war', password='123QWEasdZXC')
+    MyTable(name='Tommy', age=15, username='god_of_war', password='123QWEasdZXC'),
     MyTable(name='Ali', age=20, username='p_1969_q', password='@QWE123KFH@')
 ]
 
