@@ -1,7 +1,8 @@
-# **_FoxLin_**
-simple, fast DBMS by python
 
-![foxlin DBMS](./poster.png)
+![# **_FoxLin_** ](./poster.png)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+
+
 ### philosophy
 Foxlin is developed to create the best User experience of DBMS interface for mini projects
 it is fast because use of numpy array for contain columns data in memory
