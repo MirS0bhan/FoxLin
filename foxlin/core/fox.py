@@ -23,7 +23,7 @@ from foxlin.errors import (
 )
 
 
-BASIC_BOX = [MemBox(), StorageBox(), LogBox()]
+BASIS_BOX = [MemBox(), StorageBox(), LogBox()]
 
 class FoxLin(BoxManager, DenManager):
     """
@@ -49,7 +49,7 @@ class FoxLin(BoxManager, DenManager):
     def __init__(self,
                  path: str = None,
                  schema: Schema = Schema,
-                 box: List[FoxBox] = BASIC_BOX,
+                 box: List[FoxBox] = BASIS_BOX,
                  auto_setup: bool = True,
                  auto_enable: bool = True
                  ):

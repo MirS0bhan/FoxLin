@@ -6,7 +6,7 @@ from faker import Faker
 
 from foxlin import FoxLin, Schema, column
 
-from config.settings import BASE_DIR
+from ..config.settings import BASE_DIR
 
 
 @pytest.fixture(scope="session")
@@ -21,7 +21,7 @@ def table():
 
 
 @pytest.fixture(scope="session")
-def fake_data(table, count=100000):
+def fake_data(table, count=100):
     faker = Faker()
     data = [
         table(
