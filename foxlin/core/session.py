@@ -4,7 +4,7 @@ import functools
 
 from .query import FoxQuery
 
-from .sophy import (
+from .database import (
     Schema,
     DBCarrier,
     DB_TYPE,

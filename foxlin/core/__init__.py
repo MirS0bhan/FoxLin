@@ -25,14 +25,14 @@ from .column import (
     column
 )
 
-from .den import (
+from .session import (
     Den,
     DenManager
 )
 
 from .query import FoxQuery
 
-from .sophy import (
+from .database import (
     Schema,
     DBCarrier,
 

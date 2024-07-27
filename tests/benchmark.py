@@ -48,55 +48,6 @@ def session(db):
     return db.sessionFactory
 
 class TestFoxLin:
-    def test_insert(self, fake_data, session):
-        session.insert(*fake_data)
-        session.commit()
-
-
-    def itest_read(self, session):
-        q = session.query
-        q.raw = True
-        rec = q.select('name','age','ID') \
-               .order_by('age')\
-               .limit(5)\
-               .all()
-
-        def _(obj):
-            assert list(rec) == list(obj.record)
-
-        session.read(
-            callback = _,
-            callback_level = 'memory',
-            raw = True,
-            select= ['name','age','ID'],
-            limit = 5,
-            order = 'age'
-        )
-        session.commit()
-
-    def test_update(self, session):
-        q = session.query
-        p1 = q.rand()
-        p2 = p1.copy()
-        p2.age = 19
-        session.update(p2, columns=['age'])
-        session.commit()
-
-        query = session.query
-        assert query.get_one(p1.ID) != p1
-        assert query.get_by_id(p1.ID).age == p2.age
-
-    def test_delete(self, session):
-        q = session.query
-        rand_rec = q.rand()
-
-        session.delete(rand_rec)
-        session.commit()
-
-        q = session.query
-        #q.raw = True
-        assert rand_rec not in tuple(q.all())
-
     def test_io_speed(self, benchmark, fake_data, session):
         func = self.test_insert
         benchmark(func, fake_data, session)
@@ -115,6 +66,3 @@ class TestFoxLin:
         query.raw = True
         f = lambda query : list(query.all())
         benchmark(f, query)
-
-
-

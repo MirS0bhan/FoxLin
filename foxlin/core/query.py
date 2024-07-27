@@ -21,7 +21,7 @@ from numpy import (
 
 from random import choice
 
-from .sophy import Schema
+from .database import Schema
 from .column import BaseColumn
 from foxlin.utils import get_attr
 

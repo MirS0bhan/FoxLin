@@ -1,8 +1,8 @@
 import os
 from typing import List
 
-from .sophy import Schema 
-from .den import DenManager
+from .database import Schema 
+from .session import DenManager
 from .box import (
     FoxBox,
     MemBox,

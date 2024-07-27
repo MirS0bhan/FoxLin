@@ -6,7 +6,7 @@ import shutil
 
 from foxlin.core.column import BaseColumn
 from foxlin.errors import InvalidDatabaseSchema
-from foxlin.core.sophy import (
+from foxlin.core.database import (
     Schema,
     DBOperation,
     DBCarrier,
