@@ -23,7 +23,7 @@ from random import choice
 
 from .database import Schema
 from .column import BaseColumn
-from foxlin.utils import get_attr
+from .utils import get_attr
 
 class EQ:
     op = eq

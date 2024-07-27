@@ -8,8 +8,17 @@ from foxlin.core.column import BaseColumn
 from foxlin.core.database import (
     Schema,
     DBCarrier,
-    Log
+    DB_TYPE
 )
+
+from foxlin.core.operation import (
+    Log,
+    JsonDBOP,
+    DBDump,
+    DBLoad,
+    CreateJsonDB
+)
+
 from .base import FoxBox
 
 from foxlin.errors import InvalidDatabaseSchema

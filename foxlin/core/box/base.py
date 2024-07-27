@@ -1,6 +1,7 @@
 from typing import Callable, Dict, List
 
-from foxlin.core.database import DBOperation, LEVEL
+from foxlin.core.utils import LEVEL
+from foxlin.core.operation import DBOperation
 
 class FoxBox:
     """

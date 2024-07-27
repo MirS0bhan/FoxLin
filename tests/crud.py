@@ -27,7 +27,7 @@ def setup_db():
     yield
     # Clean up the database after each test
     with db.session as db_session:
-        db_session.delete_all()
+        db_session.delete(list(db.query.all()))
 
 def test_create(setup_db):
     # Verify that records were inserted

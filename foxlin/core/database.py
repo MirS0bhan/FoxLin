@@ -3,7 +3,7 @@ from typing import List, Callable
 
 
 from .column import BaseColumn, IDColumn
-from foxlin.utils import get_attr
+from .utils import BaseModel, get_attr
 
 
 

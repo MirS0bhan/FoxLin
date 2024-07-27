@@ -2,7 +2,7 @@ import os
 
 from foxlin.core.operation.base import DBOperation, Log
 
-from box.base import FoxBox
+from .base import FoxBox
 
 
 class LogBox(FoxBox):

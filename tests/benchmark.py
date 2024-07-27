@@ -6,7 +6,11 @@ from faker import Faker
 
 from foxlin import FoxLin, Schema, column
 
-from ..config.settings import BASE_DIR
+import os
+
+from pathlib import Path
+
+BASE_DIR = os.path.realpath(Path(__file__).parent.parent)
 
 
 @pytest.fixture(scope="session")

@@ -9,11 +9,13 @@ from .box import (
     LogBox,
 
     StorageBox,
+    BoxManager,
+)
+
+from .operation import (
     CreateJsonDB,
     DBLoad,
     DBDump,
-
-    BoxManager,
     CRUDOperation
 )
 
