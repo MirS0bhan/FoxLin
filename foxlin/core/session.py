@@ -7,17 +7,21 @@ from .query import FoxQuery
 from .database import (
     Schema,
     DBCarrier,
-    DB_TYPE,
-    COLUMN
-
+    
+    DB_TYPE
 )
 
-from .box import (
+from .operation import (
     CRUDOperation,
     DBCreate,
     DBRead,
     DBUpdate,
     DBDelete
+)
+
+from .utils import (
+    COLUMN,
+
 )
 
 

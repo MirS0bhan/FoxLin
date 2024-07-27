@@ -5,38 +5,14 @@ import orjson
 import shutil
 
 from foxlin.core.column import BaseColumn
-from foxlin.errors import InvalidDatabaseSchema
 from foxlin.core.database import (
     Schema,
-    DBOperation,
     DBCarrier,
-
-    Log,
-
-    DB_TYPE,
-    LEVEL
+    Log
 )
+from .base import FoxBox
 
-from .fox import FoxBox
-
-
-
-class JsonDBOP(DBOperation):
-    path: str
-    levels: List[LEVEL] = ['storage', 'log']
-    structure: Schema | None = None
-
-    # TODO : validate path exists with pydantic validator
-
-class CreateJsonDB(JsonDBOP):
-    op_name: str = "create_database"
-
-class DBLoad(DBCarrier, JsonDBOP):
-    op_name = 'LOAD'
-
-class DBDump(DBCarrier, JsonDBOP):
-    op_name = 'DUMP'
-
+from foxlin.errors import InvalidDatabaseSchema
 
 class StorageBox(FoxBox):
     """

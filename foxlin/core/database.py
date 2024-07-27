@@ -1,14 +1,10 @@
 from typing import List, Callable
 
-from pydantic import BaseModel as BsMdl
+
 
 from .column import BaseColumn, IDColumn
 from foxlin.utils import get_attr
 
-
-class BaseModel(BsMdl):
-    class Config:
-        arbitrary_types_allowed = True
 
 
 class Schema(BaseModel):

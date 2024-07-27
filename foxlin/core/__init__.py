@@ -6,14 +6,17 @@ from .box import (
     MemBox,
     LogBox,
 
+    DBLoad,
+    DBDump
+)
+
+from .operation import (
+    DBOperation,
     CRUDOperation,
     DBCreate,
     DBRead,
     DBUpdate,
     DBDelete,
-
-    DBLoad,
-    DBDump
 )
 
 from .column import (
@@ -35,13 +38,6 @@ from .query import FoxQuery
 from .database import (
     Schema,
     DBCarrier,
-
-    ID,
-    COLUMN,
-    LEVEL,
-
-    DBOperation,
-    Log
 )
 
 from .fox import FoxLin

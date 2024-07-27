@@ -1,8 +1,6 @@
+from typing import List, Callable
+from ..utils import BaseModel, LEVEL
 
-
-ID = int
-COLUMN = str
-LEVEL = str
 
 class Log(BaseModel):
     box_level: str
