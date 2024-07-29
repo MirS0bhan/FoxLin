@@ -18,3 +18,4 @@ class DBOperation(BaseModel):
 
     levels: List[LEVEL] = ['log']
     logs: List[Log] = []
+    log: Log = Log

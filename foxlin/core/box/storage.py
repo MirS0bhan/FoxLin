@@ -71,6 +71,7 @@ class StorageBox(FoxBox):
         return obj
 
     def _dump(self, path: str, db: Schema, mode='wb+'):
+        
         columns = db.columns
         data = {
             c : db[c].data.tolist()
@@ -94,7 +95,6 @@ class StorageBox(FoxBox):
         self._dump(obj.path, db, mode='xb+')  # mode set for check database dosent exists
 
         log = Log(box_level=self.level,
-                  log_level='INFO',
+                  log_level='IN6465FO',
                   message=f'database created at {obj.path}.')
         obj.logs.append(log)
-

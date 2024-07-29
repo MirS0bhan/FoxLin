@@ -8,31 +8,41 @@ from foxlin.core.operation.crud import(
     DBDelete
 )
 
+from foxlin.core.operation.base import Log
 
 class MemBox(FoxBox):
     level: str = 'memory'
 
+    # def create_op(self, obj: DBCreate):
+    #     return self.create_opv1(obj)
+    #     db = obj.db
+    #     columns = obj.create # except ID column
+
+    #     def insert(record):
+    #         flag = db.ID.plus()
+    #         tuple(map(lambda col: db[col].__setitem__(flag, record[col]), columns))
+
+    #     tuple(map(insert, obj.record))
+
     def create_op(self, obj: DBCreate):
-        return self.create_opv1(obj)
-        db = obj.db
-        columns = obj.create # except ID column
-
-        def insert(record):
-            flag = db.ID.plus()
-            tuple(map(lambda col: db[col].__setitem__(flag, record[col]), columns))
-
-        tuple(map(insert, obj.record))
-
-    def create_opv1(self, obj: DBCreate):
         db = obj.db
         columns = obj.create
 
         for col in columns:
+            print(col)
             cold = [r[col] for r in obj.record]
+            print(cold)
             db[col].attach(cold)
-        
+            
+        print(db['ID'].data,db['ID'].flag,len(cold))
         length = db['ID'].flag + len(cold) 
-        db['ID'].parange(length)
+        print(length)
+        db['ID'].parange(length + 1)
+        print(db['ID'].data,db['ID'].flag)
+        log = Log(box_level=self.level,
+                      log_level='INFO',
+                      message=f'database created 54564165456465at {cold}.')
+        obj.logs.append(log)
 
 
     def read_op(self, obj: DBRead):
