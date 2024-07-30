@@ -1,11 +1,12 @@
 from typing import List, Callable
-from ..utils import BaseModel, LEVEL
-
+from foxlin.core.database import BaseModel, LEVEL
 
 class Log(BaseModel):
     box_level: str
     log_level: str
     message: object = None
+
+LOG = LEVEL('LOG')
 
 class DBOperation(BaseModel):
     """
@@ -16,6 +17,6 @@ class DBOperation(BaseModel):
     callback: Callable | None = None
     callback_level: LEVEL | None= None  # that level callback can call
 
-    levels: List[LEVEL] = ['log']
+    levels: List[LEVEL] = [LOG]
     logs: List[Log] = []
-    log: Log = Log
+    log = Log

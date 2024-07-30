@@ -1,12 +1,12 @@
 import os
 
-from foxlin.core.operation.base import DBOperation, Log
+from foxlin.core.operation.base import DBOperation, Log, LEVEL, LOG
 
 from .base import FoxBox
 
 
 class LogBox(FoxBox):
-    level: str = 'log'
+    level: LEVEL = LOG
 
     def operate(self, obj: DBOperation):
         path = '.log'

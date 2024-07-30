@@ -1,7 +1,9 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Optional, Set
 
-from foxlin.core.utils import LEVEL
+from foxlin.core.database import LEVEL
 from foxlin.core.operation import DBOperation
+
+NONE = LEVEL('NONE')
 
 class FoxBox:
     """
@@ -10,7 +12,7 @@ class FoxBox:
 
     dbom: database operation manager
     """
-    level: str = 'set level of operation'
+    level: LEVEL = NONE # set level of operation
 
     def operate(self, obj: DBOperation):
         """
@@ -25,56 +27,56 @@ class FoxBox:
 
 class BoxManager:
     """
-    Box manager attitude like a router
-    for route & manager operations
+    Manages a collection of FoxBox instances for routing operations.
 
     Parameters
     ----------
     *box: FoxBox
-        get list of box for route operations by level
-    auto_enable: bool = True
-        by default box's are disable, must enable them
+        FoxBox instances to manage.
+    auto_enable: bool, optional
+        Automatically enable added boxes (default is True).
     """
 
     def __init__(self, *box: FoxBox, auto_enable: bool = True):
-        self.box_list:    Dict[LEVEL, FoxBox] = {}
-        self.__on_box_list: Dict[LEVEL, FoxBox] = {}
-
+        self.box_list: Dict[LEVEL, FoxBox] = {}
+        self.__box_list: Dict[LEVEL, FoxBox] = {}
         self.add_box(*box, auto_enable=auto_enable)
 
-    def operate(self, op: DBOperation):
-        # send operation to own their boxes
-        level_list = set(op.levels) & self.__on_box_list.keys()
-        list(map(lambda level: self.__on_box_list[level].operate(op), level_list))
- 
-    def add_box(self, *box: FoxBox, auto_enable: bool = True):
-        box_tray = {}
+    def operate(self, op: DBOperation) -> None:
+        """Send an operation to boxes that can handle it."""
+        level_list: Set[LEVEL] = set(op.levels) & self.__box_list.keys()
+        for level in level_list:
+            self.__box_list[level].operate(op)
+
+    def add_box(self, *box: FoxBox, auto_enable: bool) -> None:
+        """Add one or more boxes to the manager."""
+        box_tray: Dict[LEVEL, FoxBox] = {}
+        
         for b in box:
-            bargs = (b, FoxBox)
-            assert isinstance(*bargs) or issubclass(*bargs)
+            if not isinstance(b, FoxBox):
+                raise TypeError(f"Expected instance of FoxBox, got {type(b).__name__}")
             box_tray[b.level] = b
 
         if auto_enable:
-            self.__on_box_list.update(box_tray)
+            self.__box_list.update(box_tray)
 
         self.box_list.update(box_tray)
 
-    def remove_box(self, level: LEVEL):
-        self.box_list.pop(level)
-        return self.__on_box_list.pop(level) # return removed box
+    def remove_box(self, level: LEVEL) -> Optional[FoxBox]:
+        """Remove a box by its level."""
+        self.box_list.pop(level, None)
+        return self.__box_list.pop(level, None)  # Return the removed box or None
 
     def enable_box(self, level: LEVEL) -> bool:
-        # for enable a box to handle operations of specified level 
-        if level in self.box_list.keys():
-            box = self.box_list[level]
-            self.__on_box_list[level] = box
-            # return True for enable success 
+        """Enable a box to handle operations for the specified level."""
+        if level in self.box_list:
+            self.__box_list[level] = self.box_list[level]
             return True
         return False
 
-    def disable_box(self, level:LEVEL) -> bool:
-        if level in self.__on_box_list.keys():
-            self.__on_box_list.pop(level)
+    def disable_box(self, level: LEVEL) -> bool:
+        """Disable a box from handling operations for the specified level."""
+        if level in self.__box_list:
+            self.__box_list.pop(level)
             return True
         return False
-

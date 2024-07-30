@@ -1,13 +1,14 @@
 from typing import List
 
-from foxlin.core.utils import LEVEL
 from foxlin.core.database import DBCarrier, Schema
 
-from .base import DBOperation
+from .base import DBOperation, LEVEL, LOG
+
+STORAGE = LEVEL('STORAGE')
 
 class JsonDBOP(DBOperation):
     path: str
-    levels: List[LEVEL] = ['storage', 'log']
+    levels: List[LEVEL] = [STORAGE, LOG]
     structure: Schema | None = None
 
     # TODO : validate path exists with pydantic validator

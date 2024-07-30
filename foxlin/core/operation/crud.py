@@ -1,22 +1,20 @@
 from typing import List
 
-from foxlin.core.database import DBCarrier, Schema
-from foxlin.core.utils import (
+from foxlin.core.database import (
+    DBCarrier, 
+    Schema,
     ID,
     LEVEL,
     COLUMN
 )
 
-from .base import DBOperation
+from .base import DBOperation, LOG
 
-
-
-
+MEMORY = LEVEL('MEMORY')
 
 class CRUDOperation(DBOperation, DBCarrier):
-    levels: List[LEVEL] = ['memory', 'log']
+    levels: List[LEVEL] = [MEMORY, LOG]
     record: Schema | List[Schema]
-
 
 class DBCreate(CRUDOperation):
     op_name: str = 'CREATE'

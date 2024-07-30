@@ -1,16 +1,20 @@
-from .base import DBOperation, Log
+from .base import DBOperation, Log, LEVEL
 
 from .crud import (
     CRUDOperation,
     DBCreate,
     DBRead,
     DBUpdate,
-    DBDelete
+    DBDelete,
+    
+    MEMORY
 )
 
 from .io import (
     JsonDBOP,
     DBLoad,
     DBDump,
-    CreateJsonDB
+    CreateJsonDB,
+    
+    STORAGE
 )

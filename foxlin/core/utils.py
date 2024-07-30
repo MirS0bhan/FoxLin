@@ -1,11 +1,7 @@
 from typing import  Any
-from typing import NewType
+import string,random
 
 from pydantic import BaseModel as BsMdl
-
-ID = NewType('ID', int)
-COLUMN = NewType('COLUMN', str)
-LEVEL = NewType('LEVEL', str)
 
 class BaseModel(BsMdl):
     class Config:
@@ -13,3 +9,7 @@ class BaseModel(BsMdl):
         
 def get_attr(obj, name) -> Any:
     return object.__getattribute__(obj, name)
+
+def generate_random_name(length: int = 8) -> str:
+    """Generate a random session name."""
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))

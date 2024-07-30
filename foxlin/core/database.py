@@ -1,11 +1,12 @@
 from typing import List, Callable
-
-
+from typing import NewType
 
 from .column import BaseColumn, IDColumn
 from .utils import BaseModel, get_attr
 
-
+ID = NewType('ID', int)
+COLUMN = NewType('COLUMN', str)
+LEVEL = NewType('LEVEL', str)
 
 class Schema(BaseModel):
     """

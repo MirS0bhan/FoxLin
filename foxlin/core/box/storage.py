@@ -8,7 +8,8 @@ from foxlin.core.column import BaseColumn
 from foxlin.core.database import (
     Schema,
     DBCarrier,
-    DB_TYPE
+    DB_TYPE,
+    LEVEL
 )
 
 from foxlin.core.operation import (
@@ -16,7 +17,9 @@ from foxlin.core.operation import (
     JsonDBOP,
     DBDump,
     DBLoad,
-    CreateJsonDB
+    CreateJsonDB,
+    
+    STORAGE
 )
 
 from .base import FoxBox
@@ -29,7 +32,7 @@ class StorageBox(FoxBox):
     for manage operation in json file state
     """
     file_type = '.json'
-    level: str = 'storage'
+    level: LEVEL = STORAGE
 
     def _validate(self, data: dict, schema: Schema) -> bool:
         scl: List[str] = schema.columns  # get user definate Schema column list
