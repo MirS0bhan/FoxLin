@@ -2,7 +2,7 @@ import os
 from typing import List
 
 from .database import Schema 
-from .session import DenManager
+from .session import SessionManager
 from .box import (
     FoxBox,
     MemBox,
@@ -27,7 +27,7 @@ from foxlin.errors import (
 
 BASIS_BOX = [MemBox(), StorageBox(), LogBox()]
 
-class FoxLin(BoxManager, DenManager):
+class FoxLin(BoxManager, SessionManager):
     """
     simple, fast, funny python column based dbms
 
