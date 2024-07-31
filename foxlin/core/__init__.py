@@ -29,8 +29,8 @@ from .column import (
 )
 
 from .session import (
-    Den,
-    DenManager
+    Session,
+    SessionManager
 )
 
 from .query import FoxQuery

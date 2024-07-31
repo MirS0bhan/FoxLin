@@ -10,7 +10,7 @@ from .database import (
     Schema,
     DBCarrier,
     
-    DB_TYPE
+    DB_TYPE,COLUMN
 )
 
 from .operation import (
@@ -22,7 +22,6 @@ from .operation import (
 )
 
 from .utils import (
-    COLUMN,
     generate_random_name
 )
 
