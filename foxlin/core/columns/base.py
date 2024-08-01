@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, List
 
+
 class BaseColumn(ABC):
     """
     An abstract base class for implementing various data structure algorithms.

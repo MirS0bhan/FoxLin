@@ -8,6 +8,7 @@ ID = NewType('ID', int)
 COLUMN = NewType('COLUMN', str)
 LEVEL = NewType('LEVEL', str)
 
+
 class Schema(BaseModel):
     """
     databaser schema aliaser & also record container
@@ -25,7 +26,9 @@ class Schema(BaseModel):
     def columns(self):
         return list(self.__dict__.keys())
 
+
 DB_TYPE = Schema
+
 
 class DBCarrier(BaseModel):
     db: DB_TYPE | None = None

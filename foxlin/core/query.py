@@ -25,27 +25,31 @@ from .database import Schema
 from .column import BaseColumn
 from .utils import get_attr
 
+
 class EQ:
     op = eq
     du = '__eq__'
+
 
 class GT:
     op = gt
     du = '__gt__'
 
+
 class LT:
     op = lt
     du = '__lt__'
+
 
 class IN:
     op = contains
     du = '__contains__'
 
 
-
 VAL = Any
-OPR = Union[EQ,GT,LT]
+OPR = Union[EQ, GT, LT]
 CON = Tuple[OPR, VAL]
+
 
 class FoxCon:
     """
