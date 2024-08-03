@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 from typing import Any, List
 
 
+class IndexBase:
+    pass
+
+
 class BaseColumn(ABC):
     """
     An abstract base class for implementing various data structure algorithms.
@@ -14,7 +18,7 @@ class BaseColumn(ABC):
         default (Any): The default value to be used when no value is provided.
     """
 
-    def __init__(self, default: Any = None):
+    def __init__(self, default: Any = None, indexing: IndexBase = None):
         """
         Initialize the BaseColumn.
 

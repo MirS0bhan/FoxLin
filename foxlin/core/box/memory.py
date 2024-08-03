@@ -1,17 +1,14 @@
-from .base import FoxBox
-
-from foxlin.core.query import FoxQuery
-from foxlin.core.operation.crud import(
+from foxlin.core.operation.base import LEVEL
+from foxlin.core.operation.crud import (
     DBCreate,
     DBRead,
     DBUpdate,
     DBDelete,
-    
-    MEMORY,
-    LEVEL
-)
 
-from foxlin.core.operation.base import Log, LEVEL
+    MEMORY
+)
+from .base import FoxBox
+
 
 class MemBox(FoxBox):
     level: LEVEL = MEMORY
@@ -27,15 +24,12 @@ class MemBox(FoxBox):
 
     #     tuple(map(insert, obj.record))
 
-    def create_op(self, obj: DBCreate):
-        db = obj.db
-        columns = obj.create
-
-        # TODO: writng new
-
+    def create_op(self, obj: DBCreate) -> None:
+        # TODO: writing new
+        pass
 
     def read_op(self, obj: DBRead):
-        ## out of service
+        # out of service
         # q: FoxQuery = obj.session.query
         # q.raw = obj.raw
         # obj.record = q.SELECT(*obj.select)\
@@ -53,5 +47,4 @@ class MemBox(FoxBox):
         # out of service 
         pass
 
-    __slots__ = ('_create_op','_update_op','_delete_op','_level')
-
+    __slots__ = ('_create_op', '_update_op', '_delete_op', '_level')

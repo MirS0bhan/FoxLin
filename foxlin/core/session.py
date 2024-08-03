@@ -1,18 +1,12 @@
-from typing import List, Dict, Callable, Optional, Generator, Any
-from contextlib import contextmanager
 import functools
 import time
-
-
-from .query import FoxQuery
+from contextlib import contextmanager
+from typing import List, Dict, Callable, Optional, Generator, Any
 
 from .database import (
     Schema,
-    DBCarrier,
-    
-    DB_TYPE,COLUMN
+    DB_TYPE, COLUMN
 )
-
 from .operation import (
     CRUDOperation,
     DBCreate,
@@ -20,7 +14,7 @@ from .operation import (
     DBUpdate,
     DBDelete
 )
-
+from .query import FoxQuery
 from .utils import (
     generate_random_name
 )
@@ -35,6 +29,7 @@ class Session(object):
     oriented of SQL DML,TCL,DQL logic
 
     """
+
     def __init__(self,
                  db: DB_TYPE,
                  schema: Schema,
@@ -45,7 +40,7 @@ class Session(object):
         self._commiter = commiter
 
         self._commit_list: List[CRUDOperation] = []
-        self._commit_point: Dict[str,List] = {}
+        self._commit_point: Dict[str, List] = {}
 
     @staticmethod
     def _commitRecorder(f) -> Callable:
@@ -56,6 +51,7 @@ class Session(object):
             if isinstance(robj, CRUDOperation):
                 self._add_op(robj)
             return robj
+
         return wrapper
 
     def _add_op(self, obj):
@@ -65,24 +61,10 @@ class Session(object):
     def query(self):
         return FoxQuery(self)
 
-    def get_one(self, ID: int, columns=None, raw: bool=False) -> Schema | Dict:
-        r = list(self.get_many(ID, columns=columns, raw=raw))[0]
-        return r
-
-    def get_many(self, *ID: int, columns=None, raw: bool = False) -> Generator:
-        # TODO : also test a way to first get filterd column data by id then export records
-        assert ID != None # check for record exists 
-        column_list = columns if columns else self._db.columns # set custom or menualy columns
-
-        for _id in ID:
-            rec = {c: self._db[c].data[_id] for c in column_list} # rich record as dict
-            # check for export data as raw record or initial with Schema
-            yield rec if raw else self._schema.construct(**rec)
-
     @_commitRecorder
-    def insert(self, *recs: Schema, columns: List[COLUMN]= None) -> DBCreate:
+    def insert(self, *recs: Schema, columns: List[COLUMN] = None) -> DBCreate:
         if not columns:
-            columns = self._db.columns[1:] # except ID
+            columns = self._db.columns[1:]  # except ID
         return DBCreate(record=recs, create=columns, db=self._db)
 
     @_commitRecorder
@@ -102,26 +84,28 @@ class Session(object):
         if savepoint:
             self._commiter(self._commit_point[savepoint])
             self._commit_point.pop(savepoint)
-        else :
+        else:
             self._commiter(self._commit_list)
         self.rollback()
 
     def rollback(self, savepoint: Optional[str] = None):
         self._commit_list = self._commit_point[savepoint] if savepoint else []
-        if savepoint : self._commit_point.pop(savepoint)
+        if savepoint: self._commit_point.pop(savepoint)
 
     def savepoint(self, name: str):
         self._commit_point[name] = self._commit_list
         self.rollback()
 
-
-    def discard(self, op: Optional[CRUDOperation] = None) -> None|CRUDOperation:
+    def discard(self, op: Optional[CRUDOperation] = None) -> None | CRUDOperation:
         # remove specified operation or last operation in commit list
-        if op : self._commit_list.remove(op)
-        else: return self._commit_list.pop()
+        if op:
+            self._commit_list.remove(op)
+        else:
+            return self._commit_list.pop()
         return None
 
-    #__slots__ = ('_insert','_commit','_db','_schema','_commiter','_commit_list')
+    # __slots__ = ('_insert','_commit','_db','_schema','_commiter','_commit_list')
+
 
 class SessionManager:
     """Manages sessions with a pool and expiration handling."""
@@ -143,7 +127,7 @@ class SessionManager:
             'expires_at': time.time() + expire_in
         }
         self._session_pool[session_name] = session_instance
-        
+
         return session_instance['session']
 
     def get_session(self, session_name: str) -> Optional[Session]:

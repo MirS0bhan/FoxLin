@@ -3,9 +3,18 @@ import string,random
 
 from pydantic import BaseModel as BsMdl
 
+
 class BaseModel(BsMdl):
     class Config:
         arbitrary_types_allowed = True
+
+
+class ItemBaseClass:
+    def __getitem__(self, i) -> Any:
+        return self.__dict__[i]
+
+    def __setitem__(self, name, value):
+        setattr(self, name, value)
         
 def get_attr(obj, name) -> Any:
     return object.__getattribute__(obj, name)

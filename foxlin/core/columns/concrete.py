@@ -1,6 +1,5 @@
 import bisect
 from functools import wraps
-from typing import Any
 
 from .base import BaseColumn, Any
 

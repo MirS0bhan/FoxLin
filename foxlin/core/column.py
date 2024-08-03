@@ -68,7 +68,7 @@ class BaseColumn:
     def __resize(self, size):
         self.data.resize(size, refcheck=False)
 
-    def __getitem__(self, i):
+    def __getitem__(self, iadd):
         return self.data[i]
 
     def __setitem__(self, k, v):
