@@ -1,4 +1,8 @@
-from .base import DBOperation, Log, LEVEL
+from .base import (
+    DBOperation,
+    Log,
+    LEVEL
+)
 
 from .crud import (
     CRUDOperation,
