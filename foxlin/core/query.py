@@ -1,8 +1,7 @@
 from operator import eq, gt, lt, contains
 from random import choice
-from typing import Generator, Callable, Dict, Tuple, Union, Any
+from typing import Generator, Callable, Dict, Tuple, Union, Any, List
 
-from numpy import array, argsort, argwhere, arange
 from typing_extensions import Self
 
 from .column import BaseColumn
@@ -70,7 +69,7 @@ class FoxCon:
         func = getattr(self.column, opr.du)  # example : return Column.__eq__
         con = func(val)
 
-        x = argwhere(con)
+        x = 2 # argwhere(con)
         return x
 
     def validate(self, o):
@@ -100,8 +99,7 @@ class FoxQuery(object):
 
     def __init__(self, session):
         self.session = session
-        self.records = []
-        self.selected_col = set()
+        self.records: List[int] = []
         self.raw = False
 
         self.reset()
@@ -114,7 +112,6 @@ class FoxQuery(object):
 
     def reset(self):
         self.records = self.__get_records
-        self.selected_col = set()
 
     # accessing data 
 

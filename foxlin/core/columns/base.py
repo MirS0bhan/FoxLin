@@ -18,7 +18,7 @@ class BaseColumn(ABC):
         default (Any): The default value to be used when no value is provided.
     """
 
-    def __init__(self, default: Any = None, indexing: IndexBase = None):
+    def __init__(self, data: Any = None, default: Any = None):
         """
         Initialize the BaseColumn.
 
@@ -26,7 +26,7 @@ class BaseColumn(ABC):
             default (Any, optional): The default value to be used when no value is provided.
                 Defaults to None.
         """
-        self.data = []
+        self.data = data
         self.default = default
 
     @abstractmethod

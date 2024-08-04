@@ -19,7 +19,6 @@ class LogBox(FoxBox):
             attributes = [str(getattr(log, i, '')) for i in log.__annotations__.keys()]
             log_line = ' ; '.join(attributes) + '\n'
             log_text.append(log_line)
-        
 
         if not os.path.exists(path):
             with open(path, 'w') as log_file:

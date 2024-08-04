@@ -141,7 +141,7 @@ class SessionManager:
             return None
 
     @property
-    def sessionFactory(self) -> Session:
+    def session_factory(self) -> Session:
         """Creates and returns a new session instance."""
         return self.establish_session(privileges=set())  # Create a session with default privileges
 
