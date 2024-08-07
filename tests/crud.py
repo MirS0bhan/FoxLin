@@ -1,6 +1,9 @@
 import pytest
 from faker import Faker
 from foxlin import FoxLin, Schema, column
+from foxlin.core.database import DatabaseSettings
+from foxlin.core.fox import BASIS_BOX
+
 
 # Define the schema
 class MyTable(Schema):
@@ -9,10 +12,16 @@ class MyTable(Schema):
     username: str = column(uniqe=True, dtype=str)
     password: str = column(dtype=str)
 
-# Initialize the database
-db = FoxLin('./test_db.json', MyTable)  # Use a separate test database
 
+db = DatabaseSettings(
+    path="./test.json",
+    tables=MyTable(),
+    box=BASIS_BOX
+)
+# Initialize the database
+db = FoxLin(db)
 fake = Faker()
+
 
 @pytest.fixture
 def setup_db():

@@ -29,7 +29,7 @@ from .column import (
 )
 
 from .session import (
-    Session,
+    SessionBase,
     SessionManager
 )
 

@@ -21,7 +21,7 @@ LT: BaseOpr = BaseOpr(lt, '__lt__')
 IN: BaseOpr = BaseOpr(contains, '__in__')
 
 VAL = Any
-OPR = Union[EQ, GT, LT]
+OPR = BaseOpr
 CON = Tuple[OPR, VAL]
 
 

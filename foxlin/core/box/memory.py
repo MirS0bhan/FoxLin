@@ -1,11 +1,11 @@
-from foxlin.core.operation.base import LEVEL
-from foxlin.core.operation.crud import (
+from foxlin.core.operation import (
     DBCreate,
     DBRead,
     DBUpdate,
     DBDelete,
 
-    MEMORY
+    MEMORY,
+    LEVEL
 )
 from .base import FoxBox
 

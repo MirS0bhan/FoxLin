@@ -3,17 +3,18 @@ import time
 from contextlib import contextmanager
 from typing import List, Dict, Callable, Optional, Any, Type
 
-from foxlin.core.database import Schema, DB_TYPE
+from foxlin.core.database import Database
 from foxlin.core.operation import DBOperation
 from foxlin.core.utils import generate_random_name
 
 
-class SessionBase(object):
-    def __init__(self, commiter: Callable):
+class SessionBase(Database):
+    def __init__(self, db, commiter: Callable):
         self._commiter = commiter
-
         self._commit_list: List[DBOperation] = []
         self._commit_point: Dict[str, List] = {}
+
+        super(SessionBase, self).__init__(db=db)
 
     def _add_opr(self, opr):
         self._commit_list.append(opr)
@@ -56,14 +57,15 @@ def commit_recorder(f) -> Callable:
     return wrapper
 
 
-class SessionManager:
+class SessionManager(Database):
     """Manages sessions with a pool and expiration handling."""
 
-    def __init__(self, db: Any, schema: Any, commiter: Any):
-        self._db = db
-        self.schema = schema
+    def __init__(self, db: Any, commiter: Any):
+        self.db = db
         self._commiter = commiter
         self._session_pool: Dict[str, Dict[str, Any]] = {}  # SessionBase pool
+
+        super().__init__(db)
 
     def establish_session(self, Session: Type[SessionBase], privileges: set, expire_in: int = 3600) -> Type[SessionBase]:
         """
@@ -71,15 +73,15 @@ class SessionManager:
         """
         session_name = generate_random_name()
         session_instance = dict(
-            session=Session(self._db, self.schema, self._commiter),
+            session=Session(self.db, self._commiter),
             privileges=privileges,
             expires_at=time.time() + expire_in
         )
         self._session_pool[session_name] = session_instance
 
-        return session_instance['session']
+        return self.get_session(session_name)
 
-    def get_session(self, session_name: str) -> Optional[SessionBase]:
+    def get_session(self, session_name: str) -> Type[SessionBase]:
         """Retrieve a session by its name."""
         session_info = self._session_pool.get(session_name)
         if session_info and session_info['expires_at'] > time.time():
@@ -87,34 +89,30 @@ class SessionManager:
         else:
             # Remove expired session
             self._session_pool.pop(session_name, None)
-            return None
+            raise ValueError(f"SessionBase {session_name} does not exist or has expired.")
 
-    @property
-    def session_factory(self) -> SessionBase:
-        """Creates and returns a new session instance."""
-        return self.establish_session(privileges=set())  # Create a session with default privileges
+    @contextmanager
+    def session(self, session_type: Optional[Type[SessionBase]],
+                session_name: Optional[str] = None,
+                privileges: set = None):
+        """
+        Context manager to create and handle a session.
+        If session_name is provided, attempt to retrieve that session.
+        If not, create a new session with optional privileges.
+        """
+        if session_name:
+            # Try to retrieve an existing session by name
+            session_instance = self.get_session(session_name)
 
-    # @contextmanager
-    # def session(self, session_name: Optional[str] = None, privileges: set = None):
-    #     """
-    #     Context manager to create and handle a session.
-    #     If session_name is provided, attempt to retrieve that session.
-    #     If not, create a new session with optional privileges.
-    #     """
-    #     if session_name:
-    #         # Try to retrieve an existing session by name
-    #         session_instance = self.get_session(session_name)
-    #         if session_instance is None:
-    #             raise ValueError(f"SessionBase {session_name} does not exist or has expired.")
-    #     else:
-    #         # Establish a new session with specified privileges or an empty set
-    #         session_instance = self.establish_session(privileges or set())
-    #     try:
-    #         yield session_instance  # Yield the session instance
-    #     finally:
-    #         # Commit changes when exiting context
-    #         session_instance.commit()
-    #         # Optionally remove the session from the pool after use
-    #         self._session_pool.pop(session_name, None)
+        else:
+            # Establish a new session with specified privileges or an empty set
+            session_instance = self.establish_session(session_type, privileges or set())
+        try:
+            yield session_instance  # Yield the session instance
+        finally:
+            # Commit changes when exiting context
+            session_instance.commit()
+            # Optionally remove the session from the pool after use
+            self._session_pool.pop(session_name, None)
 
     __slots__ = ('_session_pool', '_db', 'schema', '_commiter')

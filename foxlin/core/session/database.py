@@ -1,4 +1,4 @@
-from .base import SessionBase
+from .base import SessionBase, commit_recorder
 from foxlin.core.box.storage import STORAGE
 from foxlin.errors import (
     DataBaseExistsError
@@ -12,24 +12,23 @@ from foxlin.core.operation import (
 
 
 class DatabaseSession(SessionBase):
+    @commit_recorder
     def load(self):
-        # dbdo = DBLoad(
-        #     callback=self.__set_db,
-        #     callback_level=STORAGE,
-        #     path=self.)
-        #
-        # dbdo.structure = self.schema
-        # self.operate(dbdo)
-        pass
+        dbdo = DBLoad(
+            callback="",
+            callback_level=STORAGE,
+            path=self.db.path)
+        dbdo.structure = self.db.schema()
 
+        return dbdo
+
+    @commit_recorder
     def create_database(self):
-        # file_path = self.path
-        # if os.path.exists(file_path): raise DataBaseExistsError(file_path)
-        #
-        # cjdbo = CreateJsonDB(path=file_path)  # cjdbo: create json database operation
-        # cjdbo.structure = self.schema
-        # self.operate(cjdbo)
-        pass
+        file_path = self.db.path
+
+        cjdbo = CreateJsonDB(path=file_path)  # cjdbo: create json database operation
+        cjdbo.structure = self.db.schema()
+        return cjdbo
 
     def auto_setup(self):
         try:

@@ -1,9 +1,12 @@
-from typing import NewType
+from typing import Type, NewType, Dict, Set, Optional
+from pathlib import Path
 
 from .column import IDColumn
 from .utils import BaseModel, ItemBaseClass
 
 ID = NewType('ID', int)
+TABLE = NewType('TABLE', str)
+BOX = NewType('BOX', str)
 COLUMN = NewType('COLUMN', str)
 LEVEL = NewType('LEVEL', str)
 
@@ -21,6 +24,17 @@ class Schema(BaseModel, ItemBaseClass):
 
 DB_TYPE = Schema
 
+class DatabaseSettings(BaseModel):
+    path: str | Path = ""
+    tables: Schema
+    box: Optional[Set[BOX]] = None,
+    auto_setup: bool = True,
+    auto_enable: bool = True
+
+class Database:
+    def __init__(self, db: DatabaseSettings):
+        self.db = db
+
 
 class DBCarrier(BaseModel):
-    db: DB_TYPE | None = None
+    db: Type[Schema] | None = None

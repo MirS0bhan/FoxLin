@@ -1,13 +1,15 @@
 from foxlin import FoxLin, Schema, column
 
+
 class MyTable(Schema):
-    # define your teble schema
+    # define your table schema
     name: str = column(dtype=str)
     age: int = column(dtype=int)
     username: str = column(dtype=str)
     password: str = column(dtype=str)
 
-db = FoxLin('./basic.json', MyTable) # create db
+
+db = FoxLin('./basic.json', MyTable)  # create db
 
 data = [
     MyTable(name='brian', age=37, username='biran1999', password='123456789'),
