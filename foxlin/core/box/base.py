@@ -27,7 +27,7 @@ class FoxBox:
                 obj.callback(obj)
 
 
-class BoxManager(Database):
+class BoxManager:
     """
     Manages a collection of FoxBox instances for routing operations.
 
@@ -39,12 +39,11 @@ class BoxManager(Database):
         Automatically enable added boxes (default is True).
     """
 
-    def __init__(self, db, box: Set[FoxBox], auto_enable: bool = True):
+    def __init__(self, box: Set[FoxBox], auto_enable: bool = True):
         self.box_list: Dict[LEVEL, FoxBox] = {}
         self.__box_list: Dict[LEVEL, FoxBox] = {}
+        print(box, auto_enable)
         self.add_box(*box, auto_enable=auto_enable)
-
-        super().__init__(db=db)
 
     def operate(self, op: DBOperation) -> None:
         """Send an operation to boxes that can handle it."""

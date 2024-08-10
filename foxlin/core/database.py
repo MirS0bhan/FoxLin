@@ -24,15 +24,8 @@ class Schema(BaseModel, ItemBaseClass):
 
 DB_TYPE = Schema
 
-class DatabaseSettings(BaseModel):
-    path: str | Path = ""
-    tables: Schema
-    box: Optional[Set[BOX]] = None,
-    auto_setup: bool = True,
-    auto_enable: bool = True
-
 class Database:
-    def __init__(self, db: DatabaseSettings):
+    def __init__(self, db):
         self.db = db
 
 

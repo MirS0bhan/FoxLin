@@ -3,18 +3,15 @@ import time
 from contextlib import contextmanager
 from typing import List, Dict, Callable, Optional, Any, Type
 
-from foxlin.core.database import Database
 from foxlin.core.operation import DBOperation
 from foxlin.core.utils import generate_random_name
 
 
-class SessionBase(Database):
-    def __init__(self, db, commiter: Callable):
+class SessionBase:
+    def __init__(self, commiter: Callable):
         self._commiter = commiter
         self._commit_list: List[DBOperation] = []
         self._commit_point: Dict[str, List] = {}
-
-        super(SessionBase, self).__init__(db=db)
 
     def _add_opr(self, opr):
         self._commit_list.append(opr)
@@ -47,7 +44,7 @@ class SessionBase(Database):
 
 
 def commit_recorder(f) -> Callable:
-    # put produced operations in commit list 
+    # put produced operations in commit list
     @functools.wraps(f)
     def wrapper(self, *args, **kwargs):
         opr = f(self, *args, **kwargs)
@@ -57,15 +54,12 @@ def commit_recorder(f) -> Callable:
     return wrapper
 
 
-class SessionManager(Database):
+class SessionManager:
     """Manages sessions with a pool and expiration handling."""
 
-    def __init__(self, db: Any, commiter: Any):
-        self.db = db
+    def __init__(self, commiter: Any):
         self._commiter = commiter
         self._session_pool: Dict[str, Dict[str, Any]] = {}  # SessionBase pool
-
-        super().__init__(db)
 
     def establish_session(self, Session: Type[SessionBase], privileges: set, expire_in: int = 3600) -> Type[SessionBase]:
         """
@@ -73,7 +67,7 @@ class SessionManager(Database):
         """
         session_name = generate_random_name()
         session_instance = dict(
-            session=Session(self.db, self._commiter),
+            session=Session(self._commiter),
             privileges=privileges,
             expires_at=time.time() + expire_in
         )

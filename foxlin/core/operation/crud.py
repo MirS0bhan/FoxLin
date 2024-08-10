@@ -1,7 +1,6 @@
 from typing import List, Optional, Union
 
 from foxlin.core.database import (
-    DBCarrier,
     Schema,
     
     ID,
@@ -15,7 +14,7 @@ from .base import DBOperation, LOG
 MEMORY = LEVEL('MEMORY')
 
 
-class CRUDOperation(DBOperation, DBCarrier):
+class CRUDOperation(DBOperation):
     """Base class for CRUD operations."""
     levels: List[LEVEL] = [MEMORY, LOG]
     record: Union[Schema, List[Schema]]
